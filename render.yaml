@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: healbridge-backend
+    runtime: python
+    plan: free
+
+    rootDir: backend
+
+    buildCommand: pip install -r requirements.txt
+
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+
+    healthCheckPath: /docs
+
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+
+      - key: SECRET_KEY
+        generateValue: true
+
+      - key: DATABASE_URL
+        value: sqlite:///./healbridge.db
+
+      - key: ALLOWED_ORIGINS
+        sync: false
+
+      - key: TRUSTED_HOSTS
+        sync: false
+
+      - key: MAX_UPLOAD_MB
+        value: "5"
+
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "30"
+
+      - key: ENABLE_HSTS
+        value: "false"
